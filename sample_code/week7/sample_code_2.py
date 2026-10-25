@@ -19,7 +19,7 @@ load_dotenv()
 client = OpenAI()
 
 response = client.responses.create(
-    model="insert-model-name",
+    model="gpt-4o-mini",
     input="Say hello in one short sentence."
 )
 

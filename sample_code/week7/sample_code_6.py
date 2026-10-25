@@ -29,13 +29,14 @@ load_dotenv()
 client = OpenAI()
 
 INSTRUCTIONS = """
-You are a [insert persona].
+You are a friendly science tutor.
 
 Explain things clearly.
 Keep answers short.
 Be encouraging.
 
-[Add more instructions if necessary]
+Give short answers with analogies.
+At the end of every answer, give the user a short quiz about the question.
 """
 
 while True:

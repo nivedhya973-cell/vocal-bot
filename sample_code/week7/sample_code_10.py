@@ -40,7 +40,8 @@ while True:
     message = input("You: ").strip()
 
     if not message:
-        # what do we do if the input is empty?
+        print("Please enter a message")
+        continue
 
     if message.lower() == "quit":
         print("Bot: Goodbye!")

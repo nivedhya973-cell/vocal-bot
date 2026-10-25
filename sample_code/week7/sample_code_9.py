@@ -46,7 +46,9 @@ while True:
         break
 
     if message.lower() == "reset":
-        # add reset behavior
+        print("Memory has been reset")
+        previous_response_id = None
+        continue
 
     response = client.responses.create(
         model="gpt-6-luna",

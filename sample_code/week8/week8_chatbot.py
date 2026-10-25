@@ -1,49 +1,48 @@
-# VOCABULARY STUDY COACH
+import os
+from dotenv import load_dotenv
+from openai import OpenAI
 
-# 1. Do your imports, load your .env file,
-# and create an OpenAI client.
+load_dotenv()
+client = OpenAI()
 
+INSTRUCTIONS = """You are a supportive Choir Director & Vocal Coach.
+- Provide practical vocal tips (e.g., breath support, resonance, articulation, diction).
+- Customize warm-up routines based on vocal range (Soprano, Alto, Tenor, Bass).
+- Teach music theory, sight-reading techniques, and vocal health habits.
+- Maintain an encouraging, energizing tone suitable for high-school choir students.
+- Do not provide medical advice for vocal cord injuries or severe pain—direct them to an ENT specialist."""
 
-# 2. Create INSTRUCTIONS for your chatbot.
-# Make it a friendly vocabulary coach that explains words,
-# gives examples, and quizzes students.
+previous_response_id = None
 
+print("=== VOCAL COACH ===")
+print("Ask for warm-ups, diction tips, or music theory help!")
+print("Commands: 'reset' to restart session | 'quit' to exit\n")
 
-# 3. Create a variable to store the previous response ID.
-# Start with None.
+while True:
+    user_input = input("Singer: ").strip()
 
+    if user_input.lower() == "quit":
+        print("Thanks for singing! Keep practicing!")
+        break
 
-# 4. Create a while True loop that asks for user input.
+    if user_input.lower() == "reset":
+        previous_response_id = None
+        print("\n[Session reset. Ready for a new topic!]\n")
+        continue
 
+    if not user_input:
+        print("Please type a question or topic (e.g., 'Give me a 5-minute warm-up for Altos').")
+        continue
 
-# 5. Add three special cases:
-# "quit" -> end the program
-# "reset" -> clear conversation memory
-# empty input -> ask the user to try again
+    try:
+        response = client.responses.create(
+            model="gpt-4o-mini",
+            instructions=INSTRUCTIONS,
+            input=user_input,
+            previous_response_id=previous_response_id,
+        )
+        print(f"\nCoach: {response.output_text}\n")
+        previous_response_id = response.id
 
-
-# 6. Use client.responses.create() to send the message.
-# Include the model, instructions, input,
-# and previous_response_id.
-
-
-# 7. Print the AI's response and save its response ID.
-
-
-# 8. TEST YOUR CHATBOT!
-# - Ask for a word definition.
-# - Ask a follow-up question.
-# - Ask the chatbot to quiz you.
-# - Try an empty message.
-# - Test the reset command.
-
-
-# BONUS CHALLENGE:
-# Customize your chatbot!
-#
-# Ideas:
-# - Make it specialize in SAT vocabulary.
-# - Give students hints instead of immediate answers.
-# - Add three difficulty levels: easy, medium, and hard.
-# - Make it teach vocabulary using funny example sentences.
-# - Ask students to use each new word in their own sentence.
+    except Exception:
+        print("\nConnection error. Please check your network or API key setup.\n")
